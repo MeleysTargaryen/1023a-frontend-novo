@@ -1,33 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
-
+type EstudanteType = {
+    _id: string,
+    nome: string,
+    idade: number,
+    cidade: string,
+    curso:string
+}
 function App() {
-  const [count, setCount] = useState(0)
+  useEffect(() => {
+    fetch('/api/estudantes')
+      .then(response => response.json())
+      .then((dados)=>setEstudantes(dados)) 
+  }, [])
+
+
+
+  const [ estudantes, setEstudantes] = useState<EstudanteType[]>([])
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+     <h1>Lista de estudantes</h1>
+     <div className="conteiner-estudante">
+      {estudantes.map((estudante) => {
+        return(
+        <div key={estudante._id} className="card-estudante">
+          <h2>{estudante.nome}</h2>
+          <p>Idade: {estudante.idade}</p>
+          <p>Cidade: {estudante.cidade}</p>
+          <p>Curso: {estudante.curso}</p>
+        </div>
+      )
+    })
+  }
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
