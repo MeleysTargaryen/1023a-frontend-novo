@@ -14,12 +14,13 @@ function Login(){
         .then((response)=>{
             if(response.status===200){
                 localStorage.setItem("token",response?.data?.token)
+                navigate("/")
             }
 
         })
         .catch((error:any)=>{
-            const msg = error?.response?.data?.error ?? 
-                        error?.mensagem ?? 
+            const msg = error?.response?.data?.mensagem ?? 
+                        error?.mesage ?? 
                         "Erro Desconhecido."
             navigate(`/login?mensagem=${encodeURIComponent(msg)}`)
         })
@@ -31,6 +32,7 @@ function Login(){
             <form onSubmit={handleForm}>
                 <input type="text" name="email" placeholder="Email" />
                 <input type="password" name="senha" placeholder="Senha" />
+                <input type="submit" value="Logar" />
             </form>
         </>
     )
