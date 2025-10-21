@@ -14,7 +14,7 @@ function App() {
       .then((response) => setProdutos(response.data))
       .catch((error)=>{
         console.log(error); 
-        alert("Error get data:"+error?.message)
+        alert("Error get data:"+(error?.response?.mensagem??error?.message))
       })
   }, [])
   const [produtos, setProdutos] = useState<ProdutoType[]>([])
@@ -29,7 +29,10 @@ function App() {
     const produto = {nome,preco,descricao,urlfoto}
     api.post("/produtos",produto)
     .then((response) => setProdutos([...produtos, response.data]))
-    .catch((error)=>{console.log(error); alert("Error post data:"+error?.mensagem)})
+    .catch((error)=>{
+        console.log(error); 
+        alert("Error post data:"+(error?.response?.data?.mensagem??error?.message))
+    })
   }
 
   return (
